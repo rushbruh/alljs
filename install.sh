@@ -5,6 +5,13 @@ wget https://github.com/tomnomnom/waybackurls/releases/download/v0.1.0/waybackur
 tar xvf waybackurls-linux-amd64-0.1.0.tgz
 sudo mv waybackurls /usr/local/bin
 rm waybackurls-linux-amd64-0.1.0.tgz
+
+#installing httpx 
+wget https://github.com/projectdiscovery/httpx/releases/download/v1.6.3httpx_1.6.3_linux_amd64.zip/httpx_1.6.3_linux_amd64.zip
+unzip httpx_1.6.3_linux_amd64.zip
+sudo mv httpx /usr/local/bin
+rm httpx_1.6.3_linux_amd64.zip
+
 # installing subjs
 
 wget https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.gz
