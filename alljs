@@ -1,0 +1,136 @@
+#!/usr/bin/bash
+
+echo ""
+echo $'\e[44;5m \e[37;1m   Alljs by Rushbruh   \e[0m \033[0m'
+echo ""
+
+help() {
+    echo ""
+    echo $'\e[31;1mNote: Domain must be in HTTP format (http:// or https://)\e[0m'
+    echo ""
+    echo "Options:"
+    echo "  -u URL           single URL for crawl JS files"
+    echo "  -l FILE          Input a list of domains for crawl JS files"
+}
+
+urlscan() {
+    echo ""
+    echo $'\e[34;1mSingle Url Crawling Start\e[0m'
+    
+    echo ""
+    echo $'\e[32;1m[+]   Using Waybackurls  [+]\e[0m'
+    echo ""
+    echo $1 | waybackurls | grep ".js$" | httpx -silent -mc 200 | tee single-waybackjs.txt
+
+    echo ""
+    echo $'\e[32;1m[+]   Using SubJs  [+]\e[0m'
+    echo ""
+    echo $1 | subjs | tee single-subjs.txt
+
+    echo ""
+    echo $'\e[32;1m[+]   Using GetJs  [+]\e[0m'
+    echo ""
+    echo $1 | getJS --complete | tee single-getjs.txt
+
+    echo ""
+    echo $'\e[32;1m[+]   Using Katana  [+]\e[0m'
+    echo ""
+    echo $1 | katana -jc -silent | grep ".js$" | tee single-katanajs.txt
+
+    echo ""
+    echo $'\e[32;1m[+]   Using Cariddi  [+]\e[0m'
+    echo ""
+    echo $1 | cariddi -ext 7 | grep ".js$" | tee single-cariddijs.txt
+
+    echo ""
+    echo $'\e[33;1m [+] Merging all Text [+] \033[0m'
+    echo ""
+    cat single-waybackjs.txt single-subjs.txt single-getjs.txt single-katanajs.txt single-cariddijs.txt > single-finaljs.txt
+
+    echo ""
+    echo $'\e[33;1m [+] Clearing Duplicate [+] \033[0m'
+    echo ""
+    sort -u single-finaljs.txt | uniq > single-uniqfinaljs.txt
+
+    echo ""
+    echo $'\e[31;1m [+] Removing Extra Files [+] \033[0m'
+    echo ""
+    rm single-subjs.txt single-getjs.txt single-katanajs.txt single-cariddijs.txt single-waybackjs.txt
+}
+
+listscan() {
+    echo ""
+    echo $'\e[34;1mList Crawling Start\e[0m'
+    echo ""
+    echo $'\e[32;1m[+]   Using Waybackurls  [+]\e[0m'
+    echo ""
+    cat $1 | waybackurls | grep ".js$" | httpx -silent -mc 200 | tee $1-waybackjs.txt
+
+    echo ""
+    echo $'\e[32;1m[+]   Using SubJs  [+]\e[0m'
+    echo ""
+    cat $1 | subjs | tee $1-subjs.txt
+
+    echo ""
+    echo $'\e[32;1m[+]   Using GetJs  [+]\e[0m'
+    echo ""
+    cat $1 | getJS --complete | tee $1-getjs.txt
+
+    echo ""
+    echo $'\e[32;1m[+]   Using Katana  [+]\e[0m'
+    echo ""
+    katana -list $1 -jc -silent | grep ".js$" | tee $1-katanajs.txt
+
+    echo ""
+    echo $'\e[32;1m[+]   Using Cariddi  [+]\e[0m'
+    echo ""
+    cat $1 | cariddi -ext 7 | grep ".js$" | tee $1-cariddijs.txt
+
+    echo ""
+    echo $'\e[33;1m [+] Merging all Text [+] \033[0m'
+    echo ""
+    cat $1-waybackjs.txt $1-subjs.txt $1-getjs.txt $1-katanajs.txt $1-cariddijs.txt > $1-finaljs.txt
+
+    echo ""
+    echo $'\e[33;1m [+] Clearing Duplicate [+] \033[0m'
+    echo ""
+    sort -u $1-finaljs.txt | uniq > $1-uniqfinaljs.txt
+
+    echo ""
+    echo $'\e[31;1m [+] Removing Extra Files [+] \033[0m'
+    echo ""
+    rm $1-subjs.txt $1-getjs.txt $1-katanajs.txt $1-cariddijs.txt $1-waybackjs.txt $1-finaljs.txt
+}
+
+if [ "$1" == "" ]; then
+    echo $'\e[31;1mYou Forgot the domains list or URL\e[0m'
+    echo $'\e[31;1mNote: Domain must be in HTTP format (http:// or https://)\e[0m'
+    echo $'\e[33;1mSyntax:\e[0m bash alljs -l domains.txt or bash alljs -u http://example.com'
+    echo $'\e[34;1mUse -h For Help menu\e[0m'
+    exit 0
+fi
+
+if [ "$1" == "-h" ]; then
+    help
+    exit 0
+fi
+
+if [ "$1" == "-u" ]; then
+    if [ "$2" == "" ]; then
+        echo $'\e[31;1mYou forgot to provide a URL\e[0m'
+        echo $'\e[33;1mSyntax:\e[0m bash alljs -u http://example.com'
+        exit 0
+    fi
+    urlscan $2
+    exit 0
+fi
+
+if [ "$1" == "-l" ]; then
+    if [ "$2" == "" ]; then
+        echo $'\e[31;1mYou forgot to provide a file containing domains\e[0m'
+        echo $'\e[33;1mSyntax:\e[0m bash alljs -l domains.txt'
+        exit 0
+    fi
+    listscan $2
+    exit 0
+fi
