@@ -1,38 +1,22 @@
 #!/bin/bash
 
 #installing  waybackurls
-wget https://github.com/tomnomnom/waybackurls/releases/download/v0.1.0/waybackurls-linux-amd64-0.1.0.tgz
-tar xvf waybackurls-linux-amd64-0.1.0.tgz
-sudo mv waybackurls /usr/bin
-rm waybackurls-linux-amd64-0.1.0.tgz
+go install github.com/tomnomnom/waybackurls@latest
 
 #installing httpx 
-wget https://github.com/projectdiscovery/httpx/releases/download/v1.6.3/httpx_1.6.3_linux_amd64.zip
-unzip httpx_1.6.3_linux_amd64.zip
-sudo mv httpx /usr/bin
-rm httpx_1.6.3_linux_amd64.zip
+go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 
 # installing subjs
 
-wget https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.gz
-tar xvf subjs_1.0.0_linux_amd64.tar.gz
-sudo mv subjs /usr/bin
-rm subjs_1.0.1_linux_amd64.tar.gz
+go install -v github.com/lc/subjs@latest
 
 # installing getjs
 go install github.com/003random/getJS@latest
-mv ~/go/bin/getJS /usr/bin
+
 
 
 #installing katana
-
-wget https://github.com/projectdiscovery/katana/releases/download/v1.1.0/katana_1.1.0_linux_amd64.zip
-unzip katana_1.1.0_linux_amd64.zip
-sudo mv katana /usr/bin
-rm katana_1.1.0_linux_amd64.zip
+go install github.com/projectdiscovery/katana/cmd/katana@latest
 
 #installing Cariddi
-wget https://github.com/edoardottt/cariddi/releases/download/v1.3.4/cariddi_1.3.4_linux_amd64.zip
-unzip cariddi_1.3.4_linux_amd64.zip
-sudo mv cariddi /usr/bin
-rm cariddi_1.3.4_linux_amd64.zip
+go install -v github.com/edoardottt/cariddi/cmd/cariddi@latest
